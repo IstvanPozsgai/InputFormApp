@@ -7,7 +7,7 @@ namespace InputForms
 {
     class InputForm : Panel
     {
-        Dictionary<string, InputField> fields;
+        Dictionary<string, InputTextbox> fields;
         Button button;
         Action clickAction;
 
@@ -19,7 +19,7 @@ namespace InputForms
 
             parent.Controls.Add(this);
 
-            fields = new Dictionary<string, InputField>();
+            fields = new Dictionary<string, InputTextbox>();
 
             button = new Button();
             button.Text = "Send";
@@ -40,17 +40,19 @@ namespace InputForms
             get { return GetValue(name); }
         }
 
-        public InputForm Add(string name, InputField field)
+        public InputForm Add(string name, InputTextbox field)
         {
-            int y = 15 + (fields.Count * 70);
+            int y = 10 + (fields.Count * 40);
 
             fields.Add(name, field);
             field.Add(this);
-            field.MoveTo(25, y);
+            field.MoveTo(10, y);
 
+            //Gomb pozíció
             y += 80;
             button.Top = y;
 
+            //Panel magasság
             y += 50;
             Height = y;
 

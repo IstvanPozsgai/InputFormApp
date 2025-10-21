@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace InputForms
 {
-    class InputSelect : InputField
+    class InputSelect : InputTextbox
     {
-        public InputSelect(string text, string[] options, Control parent = null) : base(text, parent)
+        public InputSelect(string text, string[] options, Control parent = null) : base(text, text, parent)
         {
             (input as ComboBox).Items.AddRange(options);
             (input as ComboBox).SelectedIndex = 0;

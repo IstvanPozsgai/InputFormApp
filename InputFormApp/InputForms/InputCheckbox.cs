@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace InputForms
 {
-    class InputCheckbox : InputField
+    class InputCheckbox : InputTextbox
     {
-        public InputCheckbox(string text, bool Jelölt, Control parent = null) : base(text, parent)
+        public InputCheckbox(string text, bool Jelölt, Control parent = null) : base(text, text, parent)
         {
-            (input as CheckBox).Checked  = Jelölt;
-            (input as CheckBox).Text  = text;
+            (input as CheckBox).Checked = Jelölt;
+            (input as CheckBox).Text = text;
 
         }
 
