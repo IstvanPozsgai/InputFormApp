@@ -1,14 +1,15 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace InputForms
 {
     class InputCheckbox : InputTextbox
     {
-        public InputCheckbox(string text, bool Jelölt, Control parent = null) : base(text, text, parent)
+        public InputCheckbox(string text, bool Jelölt, int maxLength = 15, Control parent = null) : base(text, text, maxLength, parent)
         {
             (input as CheckBox).Checked = Jelölt;
-            (input as CheckBox).Text = text;
+       //     (input as CheckBox).Text = text;
 
         }
 
@@ -16,8 +17,7 @@ namespace InputForms
         {
             CheckBox Jelölő = new CheckBox();
             Jelölő.Font = new Font("sans-serif", 12f);
-            Jelölő.Width = 150;
-
+            Jelölő.Width = Szélesség();
             return Jelölő;
         }
 

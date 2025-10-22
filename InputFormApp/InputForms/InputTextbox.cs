@@ -19,7 +19,7 @@ namespace InputForms
         /// <param name="LabelSzöveg">Label felirat</param>
         /// <param name="parent"></param>
         /// <param name="MaxLength"></param>
-        public InputTextbox(string LabelSzöveg, string tartalom, Control parent = null, int maxLength = 15)
+        public InputTextbox(string LabelSzöveg, string tartalom, int maxLength = 15, Control parent = null)
         {
             MaxLength = maxLength;
             Tartalom = tartalom;
@@ -39,6 +39,17 @@ namespace InputForms
         {
             set { input.Text = value; }
             get { return input.Text; }
+        }
+
+        public int Width
+        {
+            get { return input.Width ; }
+        }
+
+        public int Left
+        {
+            set { input.Left = value; }
+            get { return input.Left  ; }
         }
 
         public InputTextbox Add(Control parent)

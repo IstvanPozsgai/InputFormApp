@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace InputForms
 {
@@ -13,7 +15,7 @@ namespace InputForms
 
         public InputForm(Control parent)
         {
-            Width = 400;
+            Width = 100;
             Height = 100;
             BackColor = Color.LightGray;
 
@@ -46,16 +48,21 @@ namespace InputForms
 
             fields.Add(name, field);
             field.Add(this);
-            field.MoveTo(10, y);
+            field.MoveTo(5, y);
 
-            //Gomb pozíció
+            //Gomb új pozíció
             y += 80;
             button.Top = y;
 
-            //Panel magasság
+            //Panel új magasság
             y += 50;
             Height = y;
-
+            //Panel szélesség igazítása
+            if (field.Width +field.Left+10 > Width)
+            {
+                Width = field.Width + field.Left +10;
+            }
+            AlignTextBoxesToLongestLabel(this);
             return this;
         }
 
@@ -110,6 +117,43 @@ namespace InputForms
                 if (!fields[name].IsValid()) return name;
             }
             return null;
+        }
+
+
+        private void AlignInputControls(Panel panel)
+        {
+            if (fields == null || !fields.Values.Any())
+                return;
+
+            // Csak azokat az elemeket vesszük figyelembe, ahol a Control TextBox típusú
+            var textBoxPairs = fields.Values
+                                      .Where(f => f.Control is InputTextbox && f.Label != null)
+                                      .ToList();
+
+            if (!textBoxPairs.Any())
+                return;
+
+            // 1. A leghosszabb Label szöveg szélességének kiszámítása
+            int maxLabelWidth = 0;
+            using (var g = panel.CreateGraphics())
+            {
+                foreach (var field in textBoxPairs)
+                {
+                    var size = g.MeasureString(field.Label.Text, field.Label.Font);
+                    maxLabelWidth = Math.Max(maxLabelWidth, (int)size.Width);
+                }
+            }
+
+            // 2. Margó hozzáadása (pl. 15 pixel)
+            int alignedLeft = maxLabelWidth + 15;
+
+            // 3. TextBox-ok igazítása
+            foreach (var field in textBoxPairs)
+            {
+                field.Control.Left = alignedLeft;
+                // Opcionális: Label-t is igazíthatod balra, ha nem AutoSize
+                // field.Label.Left = 0;
+            }
         }
     }
 }

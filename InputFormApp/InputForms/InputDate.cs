@@ -6,7 +6,7 @@ namespace InputForms
 {
     class InputDate : InputTextbox
     {
-        public InputDate(string text, DateTime Dátum, Control parent = null) : base(text, text, parent)
+        public InputDate(string text, DateTime Dátum, int maxLength = 15, Control parent = null) : base(text, text, maxLength, parent)
         {
             (input as DateTimePicker).Value = Dátum;
             (input as DateTimePicker).Format = DateTimePickerFormat.Short;
