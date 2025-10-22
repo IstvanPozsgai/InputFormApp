@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace InputForms
 {
@@ -9,7 +8,7 @@ namespace InputForms
         public InputCheckbox(string text, bool Jelölt, int maxLength = 15, Control parent = null) : base(text, text, maxLength, parent)
         {
             (input as CheckBox).Checked = Jelölt;
-       //     (input as CheckBox).Text = text;
+            (input as CheckBox).Text = text;
 
         }
 

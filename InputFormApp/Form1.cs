@@ -11,11 +11,11 @@ namespace InputFormApp
         void Start()
         {
             form = new InputForm(this);
-            form.Add("Vezetéknév", (new InputTextbox("Vezetéknév", "Kiss",100)).AddRule(null))
-                .Add("Keresztnév", (new InputTextbox("Keresztnév", "Aladár")).AddRule(null))
-                .Add("Nem", new InputSelect("Nem", new string[] { "Férfi", "Nő", "Egyéb" }))
-                .Add("Dátum", new InputDate("Születési dátum", new DateTime(1900, 1, 1)))
-                .Add("Törölt,", new InputCheckbox("Törölt", false))
+            form.Add("Vezetéknév:", (new InputTextbox("Vezetéknév", "Kiss", 10)).AddRule(null))
+                .Add("Keresztnév:", (new InputTextbox("Keresztnév", "Aladár")).AddRule(null))
+                .Add("Nem:", new InputSelect("Nem", new string[] { "Férfi", "Nő", "Egyéb" }))
+                .Add("Dátum:", new InputDate("Születési dátum", new DateTime(1900, 1, 1)))
+                .Add("Törölt:", new InputCheckbox("Törölt", false))
                 .MoveTo(10, 10)
                 .SetButton("Elküld")
                 .OnSubmit(() =>
