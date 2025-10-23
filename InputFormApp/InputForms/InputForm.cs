@@ -41,8 +41,15 @@ namespace InputForms
 
         public string this[string name]
         {
-            get { return GetValue(name); }
+            get
+            {
+                if (fields.TryGetValue(name, out InputField field) && field.Value != null)
+                    return field.Value.ToString();
+                return string.Empty;
+            }
         }
+
+
 
         public InputForm Add(string name, InputTextbox field)
         {
@@ -102,6 +109,25 @@ namespace InputForms
             return this;
         }
 
+        public InputForm Add(string name, InputDate field)
+        {
+            int y = 10 + (fields.Count * 40);
+
+            fields.Add(name, field);
+            field.Add(this);
+            field.MoveTo(5, y);
+
+            //Gomb új pozíció
+            y += 80;
+            button.Top = y;
+
+            //Panel új magasság
+            y += 50;
+            Height = y;
+
+            return this;
+        }
+
         public InputForm FieldIgazítás()
         {
             int rightmostEdge = this.Controls.OfType<Label>()
@@ -114,7 +140,7 @@ namespace InputForms
                 this.SuspendLayout();
 
                 List<Control> controlsToAlign = this.Controls.OfType<Control>()
-                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox).ToList();
+                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox || c is DateTimePicker).ToList();
 
                 foreach (Control control in controlsToAlign)
                 {
@@ -124,7 +150,7 @@ namespace InputForms
                 this.ResumeLayout();
             }
             int maxFieldRightEdge = this.Controls.OfType<Control>()
-                                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox)
+                                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox || c is DateTimePicker)
                                     .Max(control => control.Left + control.Width);
             //Panel szélesség igazítása
             if (maxFieldRightEdge + 10 > Width)
@@ -133,15 +159,6 @@ namespace InputForms
                 button.Left = (Width - button.Width) / 2;
             }
             return this;
-        }
-
-        public string GetValue(string name)
-        {
-            if (fields.ContainsKey(name))
-            {
-                return (string)fields[name].Value;
-            }
-            return null;
         }
 
         public InputForm MoveTo(int x, int y)

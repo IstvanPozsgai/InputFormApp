@@ -14,8 +14,8 @@ namespace InputFormApp
             form.Add("Vezetéknév", (new InputTextbox("Vezetéknév", "Kiss", 10)).AddRule(null))
                 .Add("Keresztnév", (new InputTextbox("Keresztnév", "Aladár")).AddRule(null))
                 .Add("Nem", new InputSelect("Nem", new string[] { "Férfi", "Nő", "Egyéb" }))
-                //    .Add("Dátum:", new InputDate("Születési dátum", new DateTime(1900, 1, 1)))
-                .Add("Törölt", new InputCheckbox("Törölt", false))
+                .Add("Dátum", new InputDate("Születési dátum", new DateTime(2020, 12, 25)))
+                .Add("Törölt", new InputCheckbox("Törölt", true))
                 .Add("Keresztné", (new InputTextbox("Keresztné", "Aladár")).AddRule(null))
                 .MoveTo(10, 10)
                 .FieldIgazítás()
@@ -23,9 +23,10 @@ namespace InputFormApp
                 .OnSubmit(() =>
                 {
                     string name = form["Vezetéknév"] + " " + form["Keresztnév"];
-                    string sex = form["Keresztné"];
-
-                    MessageBox.Show($"{name} ({sex})");
+                    string Nem = form["Nem"];
+                    string Dátum = form["Dátum"];
+                    string törölt = form["Törölt"];
+                    MessageBox.Show($"{name} ({Nem})\n {Dátum}\n {törölt}");
                 });
 
 

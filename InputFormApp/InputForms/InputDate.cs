@@ -1,25 +1,61 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace InputForms
 {
-    class InputDate
+    class InputDate : InputField
     {
-        public InputDate(string text, DateTime Dátum, int maxLength = 15, Control parent = null)
+        readonly Label label;
+        readonly DateTime Dátum;
+        public InputDate(string LabelSzöveg, DateTime dátum, Control parent = null) : base(parent)
         {
-            //    (input as DateTimePicker).Value = Dátum;
-            //    (input as DateTimePicker).Format = DateTimePickerFormat.Short;
+            Dátum = dátum;
+            label = new Label
+            {
+                Text = LabelSzöveg,
+                Font = new Font("sans-serif", 12f),
+                AutoSize = true
+            };
 
+            DateTimePicker datetimepicker = (DateTimePicker)input;
+            datetimepicker.Value = Dátum;
+
+            if (parent != null) Add(parent);
         }
 
-        //protected override Control CreateField()
-        //{
-        //    DateTimePicker Dátumvezérlő = new DateTimePicker();
-        //    Dátumvezérlő.Font = new Font("sans-serif", 12f);
-        //    Dátumvezérlő.Width = 150;
+        protected override Control CreateField()
+        {
+            DateTimePicker datetimepicker = new DateTimePicker
+            {
+                Font = new Font("sans-serif", 12f),
+                Width = 120,
+                Format = DateTimePickerFormat.Short,
 
-        //    return Dátumvezérlő;
-        //}
+            };
+            return datetimepicker;
+        }
 
+        public override object Value
+        {
+            get => ((DateTimePicker)input).Value;
+            set => ((DateTimePicker)input).Value = (DateTime)value;
+        }
+
+        public override InputField Add(Control parent)
+        {
+            parent.Controls.Add(label);
+            parent.Controls.Add(input);
+            return this;
+        }
+
+        public InputDate MoveTo(int x, int y)
+        {
+            label.Top = y;
+            input.Top = y;
+            label.Left = x;
+            input.Left = label.Left + label.Width + 10;
+            return this;
+        }
     }
 }
