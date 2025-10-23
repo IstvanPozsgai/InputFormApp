@@ -5,10 +5,9 @@ using System.Windows.Forms;
 
 namespace InputForms
 {
-    class InputTextbox
+    class InputTextbox : InputField
     {
         readonly Label label;
-        protected Control input;
         string rule;
         readonly string Tartalom;
         readonly int MaxLength;
@@ -19,7 +18,7 @@ namespace InputForms
         /// <param name="LabelSzöveg">Label felirat</param>
         /// <param name="parent"></param>
         /// <param name="MaxLength"></param>
-        public InputTextbox(string LabelSzöveg, string tartalom, int maxLength = 15, Control parent = null)
+        public InputTextbox(string LabelSzöveg, string tartalom, int maxLength = 15, Control parent = null) : base(parent)
         {
             MaxLength = maxLength;
             Tartalom = tartalom;
@@ -35,24 +34,9 @@ namespace InputForms
             if (parent != null) Add(parent);
         }
 
-        public string Value
-        {
-            set { input.Text = value; }
-            get { return input.Text; }
-        }
 
-        public int Width
-        {
-            get { return input.Width ; }
-        }
 
-        public int Left
-        {
-            set { input.Left = value; }
-            get { return input.Left  ; }
-        }
-
-        public InputTextbox Add(Control parent)
+        public override InputField Add(Control parent)
         {
             parent.Controls.Add(label);
             parent.Controls.Add(input);
@@ -78,16 +62,18 @@ namespace InputForms
         {
             string magyar = @"[aábcdeéfghiíjklmnoóöőpqrstuúüűvwxyzAÁBCDEÉFGHIÍJKLMNOÓÖŐPQRSTUÚÜŰVWXYZ ]";
             if (rule == null) rule = magyar;
-            return Regex.IsMatch(Value, "^" + rule + "+$");
+            return Regex.IsMatch((string)Value, "^" + rule + "+$");
         }
 
-        protected virtual Control CreateField()
+        protected override Control CreateField()
         {
-            TextBox textBox = new TextBox();
-            textBox.Font = new Font("sans-serif", 12f);
-            textBox.Width = Szélesség();
-            textBox.MaxLength = MaxLength;
-            textBox.Text = Tartalom;
+            TextBox textBox = new TextBox
+            {
+                Font = new Font("sans-serif", 12f),
+                Width = Szélesség(),
+                MaxLength = MaxLength,
+                Text = Tartalom
+            };
             return textBox;
         }
 
@@ -108,6 +94,12 @@ namespace InputForms
                 válasz = textSize.Width + 8;
             }
             return válasz;
+        }
+
+        public override object Value
+        {
+            get => ((TextBox)input).Text;
+            set => ((TextBox)input).Text = value?.ToString() ?? "";
         }
     }
 }

@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="InputForms\InputCheckbox.cs" />
     <Compile Include="InputForms\InputDate.cs" />
+    <Compile Include="InputForms\InputField.cs" />
     <Compile Include="InputForms\InputTextbox.cs" />
     <Compile Include="InputForms\InputForm.cs">
       <SubType>Component</SubType>

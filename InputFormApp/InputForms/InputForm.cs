@@ -8,8 +8,8 @@ namespace InputForms
 {
     class InputForm : Panel
     {
-        Dictionary<string, InputTextbox> fields;
-        Button button;
+        readonly Dictionary<string, InputField> fields;
+        readonly Button button;
         Action clickAction;
         int LeftMax = 0;
 
@@ -21,13 +21,15 @@ namespace InputForms
 
             parent.Controls.Add(this);
 
-            fields = new Dictionary<string, InputTextbox>();
+            fields = new Dictionary<string, InputField>();
 
-            button = new Button();
-            button.Text = "Send";
-            button.Font = new Font("sans-serif", 11f, FontStyle.Bold);
-            button.Width = 150;
-            button.Height = 35;
+            button = new Button
+            {
+                Text = "Send",
+                Font = new Font("sans-serif", 11f, FontStyle.Bold),
+                Width = 150,
+                Height = 35
+            };
 
             this.Controls.Add(button);
 
@@ -58,11 +60,49 @@ namespace InputForms
             y += 50;
             Height = y;
 
-            FieldIgazítás();
+
             return this;
         }
 
-        private void FieldIgazítás()
+        public InputForm Add(string name, InputSelect field)
+        {
+            int y = 10 + (fields.Count * 40);
+
+            fields.Add(name, field);
+            field.Add(this);
+            field.MoveTo(5, y);
+
+            //Gomb új pozíció
+            y += 80;
+            button.Top = y;
+
+            //Panel új magasság
+            y += 50;
+            Height = y;
+
+            return this;
+        }
+
+        public InputForm Add(string name, InputCheckbox field)
+        {
+            int y = 10 + (fields.Count * 40);
+
+            fields.Add(name, field);
+            field.Add(this);
+            field.MoveTo(5, y);
+
+            //Gomb új pozíció
+            y += 80;
+            button.Top = y;
+
+            //Panel új magasság
+            y += 50;
+            Height = y;
+
+            return this;
+        }
+
+        public InputForm FieldIgazítás()
         {
             int rightmostEdge = this.Controls.OfType<Label>()
                 .Max(label => label.Left + label.Width);
@@ -72,8 +112,9 @@ namespace InputForms
                 LeftMax = rightmostEdge;
 
                 this.SuspendLayout();
-                var controlsToAlign = this.Controls.OfType<Control>()
-                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox || c is DateTimePicker);
+
+                List<Control> controlsToAlign = this.Controls.OfType<Control>()
+                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox).ToList();
 
                 foreach (Control control in controlsToAlign)
                 {
@@ -83,7 +124,7 @@ namespace InputForms
                 this.ResumeLayout();
             }
             int maxFieldRightEdge = this.Controls.OfType<Control>()
-                                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox || c is DateTimePicker)
+                                    .Where(c => c is TextBox || c is ComboBox || c is CheckBox)
                                     .Max(control => control.Left + control.Width);
             //Panel szélesség igazítása
             if (maxFieldRightEdge + 10 > Width)
@@ -91,13 +132,14 @@ namespace InputForms
                 Width = maxFieldRightEdge + 10;
                 button.Left = (Width - button.Width) / 2;
             }
+            return this;
         }
 
         public string GetValue(string name)
         {
             if (fields.ContainsKey(name))
             {
-                return fields[name].Value;
+                return (string)fields[name].Value;
             }
             return null;
         }
@@ -139,10 +181,6 @@ namespace InputForms
 
         string GetError()
         {
-            foreach (string name in fields.Keys)
-            {
-                if (!fields[name].IsValid()) return name;
-            }
             return null;
         }
 

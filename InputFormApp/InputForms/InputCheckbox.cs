@@ -3,22 +3,52 @@ using System.Windows.Forms;
 
 namespace InputForms
 {
-    class InputCheckbox : InputTextbox
+    public class InputCheckbox : InputField
     {
-        public InputCheckbox(string text, bool Jelölt, int maxLength = 15, Control parent = null) : base(text, text, maxLength, parent)
-        {
-            (input as CheckBox).Checked = Jelölt;
-            (input as CheckBox).Text = text;
+        private readonly string Text;
+        private readonly bool ChecKed;
 
+
+        public InputCheckbox(string text, bool isChecked, Control parent = null) : base(parent) // ← először inicializáljuk az ős osztályt
+        {
+            Text = text;
+            ChecKed = isChecked;
+
+            input = CreateField();
+
+            if (parent != null) Add(parent);
+        }
+
+        public override InputField Add(Control parent)
+        {
+            parent.Controls.Add(input);
+            return this;
         }
 
         protected override Control CreateField()
         {
-            CheckBox Jelölő = new CheckBox();
-            Jelölő.Font = new Font("sans-serif", 12f);
-            Jelölő.Width = Szélesség();
-            return Jelölő;
+            CheckBox checkbox = new CheckBox
+            {
+                Font = new Font("sans-serif", 12f),
+                Text = Text,
+                Checked = ChecKed
+            };
+            return checkbox;
         }
 
+        public override object Value
+        {
+            get => ((CheckBox)input).Checked;
+            set => ((CheckBox)input).Checked = (bool)value;
+        }
+
+        public bool IsValid() => true;
+
+        public InputCheckbox MoveTo(int x, int y)
+        {
+            input.Top = y;
+            input.Left = x;
+            return this;
+        }
     }
 }
