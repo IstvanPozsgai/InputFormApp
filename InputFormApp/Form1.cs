@@ -10,7 +10,27 @@ namespace InputFormApp
 
         void Start()
         {
-            form = new InputForm(this);
+
+
+
+        }
+
+        public Form1()
+        {
+            InitializeComponent();
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form Ablak = new Form();
+
+            form = new InputForm(Ablak);
             form.Add("Vezetéknév", (new InputTextbox("Vezetéknév", "Kiss", 10)).AddRule(null))
                 .Add("Keresztnév", (new InputTextbox("Keresztnév", "Aladár")).AddRule(null))
                 .Add("Nem", new InputSelect("Nem", new string[] { "Férfi", "Nő", "Egyéb" }))
@@ -28,19 +48,10 @@ namespace InputFormApp
                     string törölt = form["Törölt"];
                     MessageBox.Show($"{name} ({Nem})\n {Dátum}\n {törölt}");
                 });
+            Ablak.Width = form.Width + 40;
+            Ablak.Height = form.Height + 60;
 
-
-        }
-
-        public Form1()
-        {
-            InitializeComponent();
-            Start();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            Ablak.Show();
         }
     }
 }
